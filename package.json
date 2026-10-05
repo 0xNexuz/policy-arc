@@ -1,0 +1,25 @@
+{
+  "name": "policy-arc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "sim": "node scripts/standalone_sim.js",
+    "serve": "python serve.py",
+    "test": "hardhat test",
+    "deploy": "hardhat run scripts/deploy.js",
+    "deploy:live": "node --use-system-ca scripts/deploy_live.js",
+    "check:balance": "node --use-system-ca scripts/check_balance.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "ethers": "^6.17.0"
+  },
+  "devDependencies": {
+    "solc": "^0.8.36"
+  }
+}

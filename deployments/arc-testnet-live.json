@@ -1,0 +1,18 @@
+{
+  "network": "Arc Testnet (Circle)",
+  "chainId": 5042002,
+  "rpcUrl": "https://rpc.testnet.arc.network",
+  "explorer": "https://testnet.arcscan.app/",
+  "deployer": "0x4c62821b003D3D27B1B108f4E89E5B3aFE95F302",
+  "contracts": {
+    "MockUSDC": "0xF687526a4d16b227832fD6ea48F1644b0497fc04",
+    "PolicyVault": "0xb9176558920B53e9542AD75eDC9Bfa68de3A89C0"
+  },
+  "transactions": {
+    "deployMockUSDC": "0x25a86cebaee0cb20810414acb58009a4ad32aa226e63454e22ac843d7ff61a97",
+    "deployPolicyVault": "0x149ee252d57568e75253c100e19eef80264a572f7288153dc590d96202a8e52f",
+    "fundVault": "0xf04bb9f39c0e8df1627f598be966041b169d13580281d67e2a605466537b8ca0",
+    "setPolicy": "0x0a3fe5117f114b5ba66ecdff1538e49432e7a37da62df8054b9f9a26c25d2658"
+  },
+  "deployedAt": "2026-10-04T20:24:19.425Z"
+}

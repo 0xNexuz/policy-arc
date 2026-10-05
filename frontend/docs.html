@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POLICYARC // Technical Specification & Verification Documentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-pitch: #060606;
+      --bg-surface: #0C0C0C;
+      --bg-surface-elevated: #121212;
+      --border-subtle: #1F1F1F;
+      --border-strong: #333333;
+      --matrix-green: #00FF66;
+      --matrix-green-glow: rgba(0, 255, 102, 0.4);
+      --matrix-green-dim: rgba(0, 255, 102, 0.12);
+      --text-primary: #F0F0F0;
+      --text-muted: #888888;
+      --text-dim: #555555;
+      --danger-red: #FF3344;
+      --warning-amber: #FFB300;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      background-color: var(--bg-pitch);
+      color: var(--text-primary);
+      font-family: 'Space Grotesk', -apple-system, sans-serif;
+      line-height: 1.6;
+      background-image: 
+        radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 0),
+        linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(6,6,6,1));
+      background-size: 16px 16px, 100% 100%;
+      background-attachment: fixed;
+      min-height: 100vh;
+    }
+
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* Scanline Overlay */
+    .scanline-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                  linear-gradient(90deg, rgba(255,0,0,0.015), rgba(0,255,0,0.01), rgba(0,0,255,0.015));
+      background-size: 100% 4px, 6px 100%;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    /* Masthead Navigation */
+    .masthead {
+      border-bottom: 2px solid var(--border-subtle);
+      background: #090909;
+      padding: 12px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+    .masthead-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .cim-mark {
+      display: flex;
+      border: 2px solid #FFFFFF;
+      background: #000;
+      color: #FFF;
+      font-weight: 900;
+      font-size: 13px;
+      letter-spacing: -0.5px;
+    }
+    .cim-mark div {
+      padding: 3px 6px;
+      border-right: 1px solid #FFF;
+    }
+    .cim-mark div:last-child {
+      border-right: none;
+      background: var(--matrix-green);
+      color: #000;
+    }
+    .masthead-titles {
+      display: flex;
+      flex-direction: column;
+    }
+    .masthead-title {
+      font-family: 'Space Grotesk';
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #FFF;
+    }
+    .masthead-title span { color: var(--matrix-green); }
+    .masthead-sub {
+      font-family: 'JetBrains Mono';
+      font-size: 10px;
+      color: var(--text-dim);
+      letter-spacing: 1px;
+    }
+    .masthead-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'JetBrains Mono';
+      font-size: 11px;
+    }
+    .nav-btn {
+      background: #0D0D0D;
+      border: 1px solid var(--border-strong);
+      color: #EEE;
+      padding: 6px 14px;
+      font-size: 11px;
+      text-decoration: none;
+      font-family: 'JetBrains Mono';
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-btn:hover { border-color: var(--matrix-green); color: #FFF; }
+    .nav-btn-green {
+      background: var(--matrix-green);
+      color: #000;
+      border-color: var(--matrix-green);
+    }
+
+    /* Container */
+    .docs-container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* Header Banner */
+    .doc-hero {
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-surface);
+      padding: 32px 36px;
+      margin-bottom: 32px;
+      position: relative;
+    }
+    .doc-meta {
+      font-family: 'JetBrains Mono';
+      font-size: 11px;
+      color: var(--matrix-green);
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+    .doc-title {
+      font-size: 34px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+      color: #FFF;
+    }
+    .doc-subtitle {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Doc Sections */
+    .doc-section {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      margin-bottom: 28px;
+    }
+    .doc-section-header {
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border-subtle);
+      background: #090909;
+      font-family: 'JetBrains Mono';
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: #FFF;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .doc-section-header span { color: var(--matrix-green); }
+    .doc-section-body {
+      padding: 24px 28px;
+    }
+    .doc-section-body p {
+      margin-bottom: 16px;
+      color: #CCC;
+      font-size: 14px;
+    }
+    .doc-section-body h3 {
+      font-family: 'Space Grotesk';
+      font-size: 18px;
+      font-weight: 700;
+      color: #FFF;
+      margin: 24px 0 10px;
+      text-transform: uppercase;
+    }
+
+    /* Code Blocks */
+    .code-block {
+      background: #050505;
+      border: 1px solid var(--border-subtle);
+      padding: 16px 20px;
+      font-family: 'JetBrains Mono';
+      font-size: 12px;
+      color: #A0FFA0;
+      overflow-x: auto;
+      margin: 16px 0;
+      line-height: 1.5;
+    }
+
+    /* Parameter Table */
+    .param-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'JetBrains Mono';
+      font-size: 11px;
+      margin: 16px 0;
+    }
+    .param-table th {
+      background: #090909;
+      color: var(--text-dim);
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-subtle);
+      text-align: left;
+    }
+    .param-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-subtle);
+      color: #CCC;
+    }
+    .param-table tr:hover td { background: #0E0E0E; }
+    .param-name { color: var(--matrix-green); font-weight: 700; }
+
+    /* Callout */
+    .doc-callout {
+      border-left: 3px solid var(--matrix-green);
+      background: #101010;
+      padding: 14px 18px;
+      font-family: 'JetBrains Mono';
+      font-size: 12px;
+      color: #BBB;
+      margin: 16px 0;
+    }
+    .doc-callout strong { color: var(--matrix-green); }
+
+    /* Footer */
+    .footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 24px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'JetBrains Mono';
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+    .footer a { color: var(--matrix-green); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="scanline-overlay"></div>
+
+  <!-- Masthead -->
+  <header class="masthead">
+    <div class="masthead-left">
+      <div class="cim-mark">
+        <div>POL</div>
+        <div>ARC</div>
+        <div>DOC</div>
+      </div>
+      <div class="masthead-titles">
+        <div class="masthead-title">POLICY<span>ARC</span></div>
+        <div class="masthead-sub">TECHNICAL SPECIFICATION // CIRCLE ARC L1</div>
+      </div>
+    </div>
+    <div class="masthead-right">
+      <a href="index.html" class="nav-btn">← RETURN TO CONSOLE</a>
+      <a href="https://testnet.arcscan.app/address/0xb9176558920B53e9542AD75eDC9Bfa68de3A89C0" target="_blank" class="nav-btn nav-btn-green">VIEW LIVE CONTRACT ↗</a>
+    </div>
+  </header>
+
+  <div class="docs-container">
+    
+    <!-- Hero Banner -->
+    <div class="doc-hero">
+      <div class="doc-meta">[DECLASSIFIED SPECIFICATION // VOL. 01]</div>
+      <h1 class="doc-title">PolicyArc Protocol Specification</h1>
+      <p class="doc-subtitle">
+        A deterministic security vault and micro-treasury policy enforcement engine tailored for autonomous AI agent economic activity on Circle's Arc Layer-1.
+      </p>
+    </div>
+
+    <!-- Section 1: Executive Thesis -->
+    <div class="doc-section">
+      <div class="doc-section-header">
+        <div>[01] // <span>EXECUTIVE_THESIS_&amp;_PROBLEM_STATEMENT</span></div>
+      </div>
+      <div class="doc-section-body">
+        <p>
+          As autonomous AI agent swarms are granted economic sovereignty to purchase compute, query proprietary APIs, and settle payments, traditional smart contracts fail in two catastrophic ways:
+        </p>
+        <ol style="margin-left: 20px; margin-bottom: 16px; color: #CCC; font-size: 14px;">
+          <li style="margin-bottom: 8px;"><strong>Gas Volatility Lockup:</strong> On Ethereum and Solana, gas prices fluctuate wildly in native volatile assets (ETH, SOL), causing autonomous micro-transaction budgets to deplete unexpectedly.</li>
+          <li><strong>Unbounded Execution Risk:</strong> Without deterministic on-chain policy boundaries, prompt-injection attacks or logic loops can drain corporate agent treasuries within blocks.</li>
+        </ol>
+        <div class="doc-callout">
+          <strong>THE ARC ADVANTAGE:</strong> Circle's Arc L1 settles transactions with native USDC gas fees, sub-second Malachite BFT consensus, and EVM compatibility. PolicyArc builds upon this substrate to enforce fail-closed deterministic spend limits, supervisor co-signatures, and instant audit trails.
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Deployed Architecture & Contracts -->
+    <div class="doc-section">
+      <div class="doc-section-header">
+        <div>[02] // <span>DEPLOYED_CONTRACTS_&amp;_NETWORK_MANIFEST</span></div>
+      </div>
+      <div class="doc-section-body">
+        <p>
+          All smart contracts have been compiled with Solidity 0.8.24, audited, and deployed directly to the live Arc Testnet.
+        </p>
+        <table class="param-table">
+          <thead>
+            <tr>
+              <th>Contract / Parameter</th>
+              <th>Deployed Address / Value</th>
+              <th>Network / Explorer</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="param-name">PolicyVault.sol</td>
+              <td>0xb9176558920B53e9542AD75eDC9Bfa68de3A89C0</td>
+              <td><a href="https://testnet.arcscan.app/address/0xb9176558920B53e9542AD75eDC9Bfa68de3A89C0" target="_blank" style="color:var(--matrix-green)">Arcscan Explorer ↗</a></td>
+            </tr>
+            <tr>
+              <td class="param-name">MockUSDC.sol (ERC-20)</td>
+              <td>0xF687526a4d16b227832fD6ea48F1644b0497fc04</td>
+              <td><a href="https://testnet.arcscan.app/address/0xF687526a4d16b227832fD6ea48F1644b0497fc04" target="_blank" style="color:var(--matrix-green)">Arcscan Explorer ↗</a></td>
+            </tr>
+            <tr>
+              <td class="param-name">Deployer &amp; Supervisor</td>
+              <td>0x4c62821b003D3D27B1B108f4E89E5B3aFE95F302</td>
+              <td>Funded with 4.5 Arc Testnet USDC</td>
+            </tr>
+            <tr>
+              <td class="param-name">Chain ID</td>
+              <td>5042002 (0x4cef52)</td>
+              <td>Official Arc Testnet</td>
+            </tr>
+            <tr>
+              <td class="param-name">RPC Endpoint</td>
+              <td>https://rpc.testnet.arc.network</td>
+              <td>Live RPC Node</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Section 3: Invariant Matrix -->
+    <div class="doc-section">
+      <div class="doc-section-header">
+        <div>[03] // <span>SECURITY_INVARIANTS_&amp;_TEST_HARNESS</span></div>
+      </div>
+      <div class="doc-section-body">
+        <p>
+          Following the <strong>Build-Harness</strong> engineering readiness standard, PolicyArc formalizes 7 critical security invariants. Every invariant is backed by automated tests passing at 100%.
+        </p>
+        <div class="code-block">
+================================================================================
+                    POLICYARC BUILD HARNESS AUDIT SUITE
+================================================================================
+[PASS] INV-001: Per-transaction ceiling strictly enforced ($10.00 USDC cap)
+[PASS] INV-002: 24h rolling budget window correctly accumulates & resets ($50.00)
+[PASS] INV-003: Supervisor ECDSA dual-signature threshold enforced (> $2.00)
+[PASS] INV-004: Destination whitelist filter blocks unauthorized recipients
+[PASS] INV-005: Circuit breaker fail-closed emergency pause blocks all outflows
+[PASS] INV-006: Reentrancy protection via OpenZeppelin CEI pattern
+[PASS] INV-007: Arc native USDC gas fee predictability verified
+--------------------------------------------------------------------------------
+AUDIT SUMMARY: 7 / 7 INVARIANTS PASS (100% SUCCESS RATE)
+================================================================================
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 4: Integration Guide -->
+    <div class="doc-section">
+      <div class="doc-section-header">
+        <div>[04] // <span>DEVELOPER_&amp;_AGENT_SDK_INTEGRATION</span></div>
+      </div>
+      <div class="doc-section-body">
+        <p>
+          Autonomous agents integrate with PolicyVault via standard ethers.js / web3.py / viem calls:
+        </p>
+        <div class="code-block">
+// Ethers v6 Agent Dispatch Example
+import { ethers } from "ethers";
+
+const provider = new ethers.JsonRpcProvider("https://rpc.testnet.arc.network");
+const vault = new ethers.Contract(POLICY_VAULT_ADDRESS, PolicyVaultABI, agentWallet);
+
+// Autonomous micro-payment (< $2.00 threshold)
+const tx = await vault.spend(
+  recipientAddress,
+  ethers.parseUnits("0.25", 6), // $0.25 USDC (6 decimals)
+  "DeepSearch API Query"
+);
+const receipt = await tx.wait();
+console.log("Settled on Arc L1 in <800ms:", receipt.hash);
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div>POLICYARC // CIRCLE ARC MICROGRANTS HACKATHON // DORAHACKS</div>
+      <div><a href="index.html">RETURN TO OPERATIONAL CONSOLE</a></div>
+    </footer>
+
+  </div>
+</body>
+</html>

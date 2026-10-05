@@ -1,0 +1,51 @@
+{
+  "suite": "PolicyArc Invariant Test Harness",
+  "timestamp": "2026-10-05T18:17:25.762Z",
+  "totalInvariants": 7,
+  "passedCount": 7,
+  "failedCount": 0,
+  "results": [
+    {
+      "id": "INV-001",
+      "name": "Per-Tx Limit Enforcement",
+      "passed": true,
+      "details": "Reverted with PER_TX_LIMIT_EXCEEDED when spending $15 > $10 cap"
+    },
+    {
+      "id": "INV-002",
+      "name": "Cumulative Daily Budget Cap",
+      "passed": true,
+      "details": "Blocked spend exceeding $50.00 daily budget window"
+    },
+    {
+      "id": "INV-003",
+      "name": "Supervisor Co-Signature Requirement",
+      "passed": true,
+      "details": "Preflight halted spend > $2.00; valid ECDSA co-signature released funds"
+    },
+    {
+      "id": "INV-004",
+      "name": "Recipient Whitelist Enforcement",
+      "passed": true,
+      "details": "Reverted with WHITELIST_VIOLATION when sending to unauthorized target"
+    },
+    {
+      "id": "INV-005",
+      "name": "Emergency Pause Circuit Breaker",
+      "passed": true,
+      "details": "Blocked all outbound agent spends while paused == true"
+    },
+    {
+      "id": "INV-006",
+      "name": "Replay Protection Nonce Monotonicity",
+      "passed": true,
+      "details": "spendNonce monotonically advanced from 1 to 2"
+    },
+    {
+      "id": "INV-007",
+      "name": "Arc Native USDC Gas Standard",
+      "passed": true,
+      "details": "Gas accounted as 0.000120 USDC (Native Gas Asset) with 680ms (Deterministic)"
+    }
+  ]
+}
