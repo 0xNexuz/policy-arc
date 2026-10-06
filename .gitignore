@@ -10,3 +10,4 @@ preview*.png
 screenshot*.png
 
 .vercel
+~$*
