@@ -8,3 +8,5 @@ artifacts/build-info/
 .vercel/
 preview*.png
 screenshot*.png
+
+.vercel

@@ -1,11 +1,4 @@
 {
-  "version": 2,
   "cleanUrls": true,
-  "name": "policyarc",
-  "rewrites": [
-    { "source": "/", "destination": "/frontend/index.html" },
-    { "source": "/docs", "destination": "/frontend/docs.html" },
-    { "source": "/docs.html", "destination": "/frontend/docs.html" },
-    { "source": "/assets/:match*", "destination": "/frontend/assets/:match*" }
-  ]
+  "trailingSlash": false
 }
