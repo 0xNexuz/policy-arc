@@ -59,6 +59,15 @@ PolicyArc is deployed and live on Circle's official Arc Testnet. All transaction
 
 ---
 
+## Pitch Deck Presentation
+
+The official PolicyArc pitch deck is available in both editable PowerPoint and vector PDF formats:
+
+* PowerPoint Presentation: [PolicyArc_Pitch_Deck.pptx](PolicyArc_Pitch_Deck.pptx) (16:9 widescreen layout)
+* PDF Document: [PolicyArc_Pitch_Deck.pdf](PolicyArc_Pitch_Deck.pdf) (16:9 vector print)
+
+---
+
 ## Formally Verified Security Invariants
 
 PolicyArc has been audited and verified using the Build-Harness engineering framework. All seven core invariants are covered by automated tests with a 100% pass rate.
