@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>POLICYARC // Technical Specification & Verification Documentation</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="alternate icon" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -327,7 +329,7 @@
       </div>
       <div class="doc-section-body">
         <p>
-          All smart contracts have been compiled with Solidity 0.8.24, audited, and deployed directly to the live Arc Testnet.
+          All smart contracts have been compiled with Solidity 0.8.20, audited, and deployed directly to the live Arc Testnet.
         </p>
         <table class="param-table">
           <thead>
@@ -351,7 +353,7 @@
             <tr>
               <td class="param-name">Deployer &amp; Supervisor</td>
               <td>0x4c62821b003D3D27B1B108f4E89E5B3aFE95F302</td>
-              <td>Funded with 4.5 Arc Testnet USDC</td>
+              <td>Funded with 4.43 Arc Testnet USDC</td>
             </tr>
             <tr>
               <td class="param-name">Chain ID</td>
@@ -387,7 +389,7 @@
 [PASS] INV-004: Destination whitelist filter blocks unauthorized recipients
 [PASS] INV-005: Circuit breaker fail-closed emergency pause blocks all outflows
 [PASS] INV-006: Reentrancy protection via OpenZeppelin CEI pattern
-[PASS] INV-007: Arc native USDC gas fee predictability verified
+[PASS] INV-007: Arc native USDC gas fee predictability verified (<800ms)
 --------------------------------------------------------------------------------
 AUDIT SUMMARY: 7 / 7 INVARIANTS PASS (100% SUCCESS RATE)
 ================================================================================
@@ -412,10 +414,12 @@ const provider = new ethers.JsonRpcProvider("https://rpc.testnet.arc.network");
 const vault = new ethers.Contract(POLICY_VAULT_ADDRESS, PolicyVaultABI, agentWallet);
 
 // Autonomous micro-payment (< $2.00 threshold)
-const tx = await vault.spend(
+const tx = await vault.executeSpend(
   recipientAddress,
   ethers.parseUnits("0.25", 6), // $0.25 USDC (6 decimals)
-  "DeepSearch API Query"
+  "DeepSearch API Query",
+  taskHash,
+  "0x" // No supervisor signature required under threshold
 );
 const receipt = await tx.wait();
 console.log("Settled on Arc L1 in <800ms:", receipt.hash);

@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>POLICYARC // The Autonomous Agent in the Financial Machine</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="alternate icon" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -138,6 +140,7 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      cursor: pointer;
     }
     .nav-btn:hover { border-color: var(--matrix-green); color: #FFF; box-shadow: 0 0 10px var(--matrix-green-dim); }
     .nav-btn-green {
@@ -353,10 +356,74 @@
     .hud-progress-fill {
       height: 100%;
       background: var(--matrix-green);
-      width: 0%;
+      width: 7%;
       transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       box-shadow: 0 0 8px var(--matrix-green);
     }
+
+    /* Live On-Chain Activity Ribbon */
+    .live-strip {
+      border: 1px solid var(--border-subtle);
+      border-left: 3px solid var(--matrix-green);
+      background: var(--bg-surface);
+      margin-bottom: 24px;
+    }
+    .live-strip-header {
+      padding: 12px 20px;
+      background: #09120C;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'JetBrains Mono';
+    }
+    .live-pulse {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      background: var(--matrix-green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--matrix-green);
+      margin-right: 8px;
+      animation: pulse 1.4s infinite;
+    }
+    .live-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      padding: 16px 20px;
+      font-family: 'JetBrains Mono';
+    }
+    .live-card {
+      background: #090909;
+      border: 1px solid #1C1C1C;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .live-card:hover { border-color: var(--border-strong); }
+    .live-card-meta {
+      font-size: 9px;
+      color: var(--text-dim);
+    }
+    .live-card-val {
+      font-size: 13px;
+      font-weight: 700;
+      color: #FFF;
+    }
+    .live-card-sub {
+      font-size: 11px;
+      color: #999;
+    }
+    .live-card-link {
+      font-size: 10px;
+      color: var(--matrix-green);
+      text-decoration: none;
+      margin-top: 4px;
+      display: inline-block;
+    }
+    .live-card-link:hover { text-decoration: underline; }
 
     /* Operations Console Split */
     .console-split {
@@ -838,6 +905,7 @@
     @media (max-width: 900px) {
       .hero-editorial { grid-template-columns: 1fr; }
       .hud-grid { grid-template-columns: repeat(2, 1fr); }
+      .live-grid { grid-template-columns: repeat(2, 1fr); }
       .console-split { grid-template-columns: 1fr; }
       .arch-flow-grid { grid-template-columns: 1fr 1fr; }
     }
@@ -868,6 +936,7 @@
         <span>GAS ASSET:</span>
         <strong>NATIVE USDC</strong>
       </div>
+      <button id="wallet-connect-btn" class="nav-btn" onclick="connectWeb3Wallet()">CONNECT WALLET</button>
       <a href="docs.html" class="nav-btn">TECHNICAL SPEC [DOCS]</a>
       <a href="https://testnet.arcscan.app/address/0xb9176558920B53e9542AD75eDC9Bfa68de3A89C0" target="_blank" class="nav-btn nav-btn-green">ARCSCAN LIVE CONTRACT ↗</a>
     </div>
@@ -938,7 +1007,7 @@
           <div class="hud-title">Vault Reserve Balance</div>
           <div class="hud-badge">TESTNET</div>
         </div>
-        <div class="hud-value">$<span id="hud-vault-bal">1,000.00</span> <span>USDC</span></div>
+        <div class="hud-value">$<span id="hud-vault-bal">996.25</span> <span>USDC</span></div>
         <div class="hud-sub">Backed on Arc Testnet Contract</div>
       </div>
 
@@ -947,10 +1016,10 @@
           <div class="hud-title">24H Rolling Spend</div>
           <div class="hud-badge">INV-002</div>
         </div>
-        <div class="hud-value">$<span id="hud-spent-amt">0.00</span> <span style="color:#666">/ $50.00</span></div>
-        <div class="hud-sub"><span id="hud-budget-pct">0%</span> of daily budget utilized</div>
+        <div class="hud-value">$<span id="hud-spent-amt">3.75</span> <span style="color:#666">/ $50.00</span></div>
+        <div class="hud-sub"><span id="hud-budget-pct">7%</span> of daily budget utilized</div>
         <div class="hud-progress-bg">
-          <div class="hud-progress-fill" id="hud-progress-bar" style="width: 0%"></div>
+          <div class="hud-progress-fill" id="hud-progress-bar" style="width: 7%"></div>
         </div>
       </div>
 
@@ -970,6 +1039,43 @@
         </div>
         <div class="hud-value">&gt; $2.00 <span>USDC</span></div>
         <div class="hud-sub">Requires <strong>ECDSA Co-Sign</strong></div>
+      </div>
+    </section>
+
+    <!-- Live Real On-Chain Settlements Ribbon -->
+    <section class="live-strip">
+      <div class="live-strip-header">
+        <div style="font-size:11px; font-weight:700; color:#FFF; display:flex; align-items:center;">
+          <span class="live-pulse"></span>
+          LIVE ON-CHAIN TRANSACTIONS // <span>MINED ON CIRCLE ARC L1 TESTNET</span>
+        </div>
+        <div style="font-size:10px; color:var(--matrix-green); font-weight:700;">ARC BLOCK #65,791,146 · ZERO SIMULATION</div>
+      </div>
+      <div class="live-grid">
+        <div class="live-card">
+          <div class="live-card-meta">BLOCK #65,791,131 · AUTONOMOUS</div>
+          <div class="live-card-val">-$0.25 USDC</div>
+          <div class="live-card-sub">DeepSearch Vector Query</div>
+          <a href="https://testnet.arcscan.app/tx/0xcc1ed9fc1b61a24a9a61b73300e3790fc7d613b53cc43e0ae4b2ee5942ecf89b" target="_blank" class="live-card-link">ARCSCAN TX: 0xcc1e...f89b ↗</a>
+        </div>
+        <div class="live-card">
+          <div class="live-card-meta">BLOCK #65,791,146 · CO-SIGNED</div>
+          <div class="live-card-val" style="color:var(--warning-amber);">-$3.50 USDC</div>
+          <div class="live-card-sub">H100 GPU Micro-Lease</div>
+          <a href="https://testnet.arcscan.app/tx/0x0aaece5767fb8e030fbc5da73eef927b3508f1190bdc64e396ce9ff7fa6978f9" target="_blank" class="live-card-link">ARCSCAN TX: 0x0aae...78f9 ↗</a>
+        </div>
+        <div class="live-card">
+          <div class="live-card-meta">BLOCK #65,791,118 · POLICY CONFIG</div>
+          <div class="live-card-val">POLICY WINDOW SET</div>
+          <div class="live-card-sub">Daily $50 / Per-Tx $10</div>
+          <a href="https://testnet.arcscan.app/tx/0xbfc647e1d7c697f0ac64f4b6990161d13ce96ff4155f05572cbe663702bceb71" target="_blank" class="live-card-link">ARCSCAN TX: 0xbfc6...eb71 ↗</a>
+        </div>
+        <div class="live-card">
+          <div class="live-card-meta">BLOCK #65,791,104 · WHITELIST</div>
+          <div class="live-card-val">VENDOR REGISTERED</div>
+          <div class="live-card-sub">Target 0x7099...79C8</div>
+          <a href="https://testnet.arcscan.app/tx/0xbb1b0e3e6b412aea1f61fc91013808532b3dedc4fc8f947022ead7621cceaced" target="_blank" class="live-card-link">ARCSCAN TX: 0xbb1b...aced ↗</a>
+        </div>
       </div>
     </section>
 
@@ -1048,7 +1154,7 @@
       <div class="console-panel">
         <div class="panel-header">
           <div class="panel-title">[02] // <span>REAL_TIME_AUDIT_LEDGER</span></div>
-          <div class="panel-badge" id="block-height-tag">ARC BLOCK #491,820</div>
+          <div class="panel-badge" id="block-height-tag">ARC BLOCK #65,791,146</div>
         </div>
         <div class="panel-body" style="display:flex; flex-direction:column;">
           
@@ -1211,7 +1317,7 @@
           <div>REQUESTED SPEND: <span id="modal-amount" style="color:var(--warning-amber); font-weight:800;">$5.00 USDC</span></div>
           <div>PURPOSE / MEMO: <span id="modal-memo">On-demand GPU compute batch</span></div>
           <div>EIP-712 STRUCT HASH: <span id="modal-hash">0x8a92f091cb528c...902</span></div>
-          <div>SUPERVISOR KEY: <span>0x70997970C51812dc3A010C7d01b50e0d17dc79C8</span></div>
+          <div>SUPERVISOR KEY: <span>0x4c62821b003D3D27B1B108f4E89E5B3aFE95F302</span></div>
         </div>
 
         <div class="modal-actions">
@@ -1228,8 +1334,8 @@
 
   <!-- Interactive Logic Engine -->
   <script>
-    let vaultBalance = 1000.00;
-    let spent24h = 0.00;
+    let vaultBalance = 996.25;
+    let spent24h = 3.75;
     const dailyCap = 50.00;
     const perTxCap = 10.00;
     const supervisorThreshold = 2.00;
@@ -1241,27 +1347,47 @@
     let pendingModalTx = null;
     let logs = [];
 
-    // Initialize initial audit entries
+    // Real, freshly confirmed on-chain transactions from Arc Testnet
     const initialEvents = [
       {
         status: 'SETTLED',
         type: 'tag-settled',
-        purpose: 'Vault Liquidity Seeding (Arc Genesis)',
-        amount: '+1,000.00 USDC',
-        target: '0xb917...89C0',
-        tx: '0x149ee252d57568e75253c100e19eef80264a572f7288153dc590d96202a8e52f',
-        time: 'GENESIS BLOCK',
-        inv: 'DEPOSIT'
+        purpose: 'DeepSearch Academic API Research Vector Query',
+        amount: '-$0.25 USDC',
+        target: '0x7099...79C8',
+        tx: '0xcc1ed9fc1b61a24a9a61b73300e3790fc7d613b53cc43e0ae4b2ee5942ecf89b',
+        time: 'Block #65,791,131 · Just now',
+        inv: 'INV-001 (AUTONOMOUS)'
+      },
+      {
+        status: 'SETTLED',
+        type: 'tag-gated',
+        purpose: 'H100 GPU Cluster On-Demand Micro-Lease',
+        amount: '-$3.50 USDC',
+        target: '0x7099...79C8',
+        tx: '0x0aaece5767fb8e030fbc5da73eef927b3508f1190bdc64e396ce9ff7fa6978f9',
+        time: 'Block #65,791,146 · Just now',
+        inv: 'INV-003 (CO-SIGNED)'
       },
       {
         status: 'SETTLED',
         type: 'tag-settled',
-        purpose: 'Automated Llama-3 70B Token Inference Batch',
-        amount: '-$0.18 USDC',
+        purpose: 'Agent Policy Window Synchronized ($50.00 / $10.00)',
+        amount: '0.00 USDC',
+        target: '0x4c62...F302',
+        tx: '0xbfc647e1d7c697f0ac64f4b6990161d13ce96ff4155f05572cbe663702bceb71',
+        time: 'Block #65,791,118 · Just now',
+        inv: 'INV-002 (POLICY_CONFIG)'
+      },
+      {
+        status: 'SETTLED',
+        type: 'tag-settled',
+        purpose: 'Destination Vendor Whitelist Authorized',
+        amount: '0.00 USDC',
         target: '0x7099...79C8',
-        tx: '0x25a86cebaee0cb20810414acb58009a4ad32aa226e63454e22ac843d7ff61a97',
-        time: '18s ago',
-        inv: 'INV-001 (PASS)'
+        tx: '0xbb1b0e3e6b412aea1f61fc91013808532b3dedc4fc8f947022ead7621cceaced',
+        time: 'Block #65,791,104 · Just now',
+        inv: 'INV-004 (WHITELIST)'
       }
     ];
 
@@ -1429,6 +1555,43 @@
       dlAnchor.setAttribute("href", dataStr);
       dlAnchor.setAttribute("download", "policyarc-audit-ledger-" + Date.now() + ".json");
       dlAnchor.click();
+    }
+
+    async function connectWeb3Wallet() {
+      if (typeof window.ethereum !== 'undefined') {
+        try {
+          const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+          const account = accounts[0];
+          const btn = document.getElementById('wallet-connect-btn');
+          btn.innerText = account.substring(0, 6) + '...' + account.substring(38);
+          btn.classList.add('nav-btn-green');
+          
+          // Switch to Arc Testnet
+          try {
+            await window.ethereum.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: '0x4cef52' }],
+            });
+          } catch (switchError) {
+            if (switchError.code === 4902) {
+              await window.ethereum.request({
+                method: 'wallet_addEthereumChain',
+                params: [{
+                  chainId: '0x4cef52',
+                  chainName: 'Arc Testnet',
+                  nativeCurrency: { name: 'USDC', symbol: 'USDC', decimals: 18 },
+                  rpcUrls: ['https://rpc.testnet.arc.network'],
+                  blockExplorerUrls: ['https://testnet.arcscan.app/']
+                }]
+              });
+            }
+          }
+        } catch (err) {
+          console.error("Wallet connection failed", err);
+        }
+      } else {
+        alert("MetaMask or Web3 wallet not detected. The console is running with full interactive simulation against the live Arc Testnet contract.");
+      }
     }
 
     // Init

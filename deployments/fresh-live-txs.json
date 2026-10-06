@@ -1,0 +1,67 @@
+{
+  "generatedAt": "2026-10-06T11:54:55.580Z",
+  "network": "Arc Testnet (Circle)",
+  "chainId": 5042002,
+  "contracts": {
+    "PolicyVault": "0xb9176558920B53e9542AD75eDC9Bfa68de3A89C0",
+    "MockUSDC": "0xF687526a4d16b227832fD6ea48F1644b0497fc04"
+  },
+  "liveTransactions": [
+    {
+      "id": "TX-LIVE-001",
+      "type": "AUTONOMOUS",
+      "purpose": "DeepSearch Academic API Research Vector Query",
+      "amount": "-$0.25 USDC",
+      "amountNum": 0.25,
+      "target": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+      "txHash": "0xcc1ed9fc1b61a24a9a61b73300e3790fc7d613b53cc43e0ae4b2ee5942ecf89b",
+      "blockNumber": 65791131,
+      "timestamp": "12:54:55 PM",
+      "date": "2026-10-06",
+      "rule": "INV-001 (AUTONOMOUS_APPROVED)",
+      "explorerUrl": "https://testnet.arcscan.app/tx/0xcc1ed9fc1b61a24a9a61b73300e3790fc7d613b53cc43e0ae4b2ee5942ecf89b"
+    },
+    {
+      "id": "TX-LIVE-002",
+      "type": "CO-SIGNED",
+      "purpose": "H100 GPU Cluster On-Demand Micro-Lease",
+      "amount": "-$3.50 USDC",
+      "amountNum": 3.5,
+      "target": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+      "txHash": "0x0aaece5767fb8e030fbc5da73eef927b3508f1190bdc64e396ce9ff7fa6978f9",
+      "blockNumber": 65791146,
+      "timestamp": "12:54:55 PM",
+      "date": "2026-10-06",
+      "rule": "INV-003 (SUPERVISOR_ECDSA_VERIFIED)",
+      "explorerUrl": "https://testnet.arcscan.app/tx/0x0aaece5767fb8e030fbc5da73eef927b3508f1190bdc64e396ce9ff7fa6978f9"
+    },
+    {
+      "id": "TX-LIVE-003",
+      "type": "POLICY_GATE",
+      "purpose": "Agent Policy Window Synchronized ($50.00 Daily / $10.00 Per-Tx)",
+      "amount": "0.00 USDC",
+      "amountNum": 0,
+      "target": "0x4c62821b003D3D27B1B108f4E89E5B3aFE95F302",
+      "txHash": "0xbfc647e1d7c697f0ac64f4b6990161d13ce96ff4155f05572cbe663702bceb71",
+      "blockNumber": 65791118,
+      "timestamp": "12:54:55 PM",
+      "date": "2026-10-06",
+      "rule": "INV-002 (POLICY_CONFIG)",
+      "explorerUrl": "https://testnet.arcscan.app/tx/0xbfc647e1d7c697f0ac64f4b6990161d13ce96ff4155f05572cbe663702bceb71"
+    },
+    {
+      "id": "TX-LIVE-004",
+      "type": "SECURITY",
+      "purpose": "Destination Vendor Whitelist Authorized",
+      "amount": "0.00 USDC",
+      "amountNum": 0,
+      "target": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+      "txHash": "0xbb1b0e3e6b412aea1f61fc91013808532b3dedc4fc8f947022ead7621cceaced",
+      "blockNumber": 65791104,
+      "timestamp": "12:54:55 PM",
+      "date": "2026-10-06",
+      "rule": "INV-004 (WHITELIST_REGISTERED)",
+      "explorerUrl": "https://testnet.arcscan.app/tx/0xbb1b0e3e6b412aea1f61fc91013808532b3dedc4fc8f947022ead7621cceaced"
+    }
+  ]
+}
