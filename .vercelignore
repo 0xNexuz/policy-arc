@@ -1,0 +1,7 @@
+# Explicitly ignore pitch deck and scripts from Vercel deployment
+*.pdf
+*.pptx
+scripts/
+contracts/
+audit/
+test/
