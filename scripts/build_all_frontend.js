@@ -943,6 +943,7 @@ const indexHtml = `<!DOCTYPE html>
         <strong>NATIVE USDC</strong>
       </div>
       <button id="wallet-connect-btn" class="nav-btn" onclick="connectWeb3Wallet()">CONNECT WALLET</button>
+      <a href="deck.html" class="nav-btn">PITCH DECK [5 SLIDES]</a>
       <a href="docs.html" class="nav-btn">TECHNICAL SPEC [DOCS]</a>
       <a href="https://testnet.arcscan.app/address/0xb9176558920B53e9542AD75eDC9Bfa68de3A89C0" target="_blank" class="nav-btn nav-btn-green">ARCSCAN LIVE CONTRACT ↗</a>
     </div>
@@ -1900,6 +1901,7 @@ const docsHtml = `<!DOCTYPE html>
     </div>
     <div class="masthead-right">
       <a href="index.html" class="nav-btn">← RETURN TO CONSOLE</a>
+      <a href="deck.html" class="nav-btn">PITCH DECK [5 SLIDES]</a>
       <a href="https://testnet.arcscan.app/address/0xb9176558920B53e9542AD75eDC9Bfa68de3A89C0" target="_blank" class="nav-btn nav-btn-green">VIEW LIVE CONTRACT ↗</a>
     </div>
   </header>
